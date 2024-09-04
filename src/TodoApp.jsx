@@ -1,5 +1,7 @@
 import { useReducer } from "react"
 import { todoReducer } from "./todoReducer";
+import { TodoList } from "./TodoList";
+import { TodoAdd } from "./TodoAdd";
 
 
 const inialState = [
@@ -7,13 +9,11 @@ const inialState = [
         id: new Date().getTime(),
         description: 'primera tarea',
         done: false,
-
     },
     {
         id: new Date().getTime() * 3,
         description: 'segunda tarea',
         done: false,
-
     },
 ];
 
@@ -21,6 +21,9 @@ export const TodoApp = () => {
 
     const [todos, dispatch] = useReducer(todoReducer, inialState);
 
+    const handleNewTodo = (todo) => {
+        console.log(todo);
+    }
 
     return (
         <>
@@ -29,46 +32,19 @@ export const TodoApp = () => {
 
             <div className="row">
                 <div className="col-7">
-                    <ul className="list-group">
-                        {
-                            todos.map(todo => (
-                                <li className="list-group-item d-flex justify-content-between">
-                                    <span className="align-self-center">Item 1</span>
-                                    <button className="btn btn-danger">Borrar</button>
-                                </li>
-
-
-
-                            ))
-                        }
-
-                    </ul>
+                    <TodoList todos={todos} />
                 </div>
 
                 <div className="col-5">
-
+                    {/* todo add onNewTodo(todo)*/}
+                    {/* {id:net Date(), description, done:fasle} */}
                     <h4>Agregar TODO</h4>
                     <hr />
-                    <form>
-                        <input
-                            type="text"
-                            placeholder="¿Qué hay que hacer?"
-                            className="form-control"
-                        />
-                        <button
-                            type="submit"
-                            className="btn btn-outline-primary mt-1"
-                        >
-                            Agregar
+                    <TodoAdd handleNewTodo={handleNewTodo} />
 
-                        </button>
-                    </form>
+                    {/* fin todo add */}
                 </div>
-
             </div>
-
-
         </>
-
     )
 }
