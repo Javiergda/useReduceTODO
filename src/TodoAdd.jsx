@@ -13,11 +13,9 @@ export const TodoAdd = ({ handleNewTodo }) => {
             description: description,
             done: false,
         }
-
         handleNewTodo(newTodo);
         setDescription('');
     }
-
 
     return (
         <>

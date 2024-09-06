@@ -4,14 +4,7 @@ import { TodoList } from "./TodoList";
 import { TodoAdd } from "./TodoAdd";
 
 
-const inialState = [
-    // {
-    //     id: new Date().getTime(),
-    //     description: 'primera tarea',
-    //     done: false,
-    // },
-
-];
+const inialState = [];
 
 const init = () => {
     return JSON.parse(localStorage.getItem('todos')) || []; // si es nulo devolvemos arreglo vacio
@@ -20,7 +13,6 @@ const init = () => {
 export const TodoApp = () => {
 
     const [todos, dispatch] = useReducer(todoReducer, inialState, init);
-
 
     useEffect(() => {
         localStorage.setItem('todos', JSON.stringify(todos));
@@ -42,9 +34,16 @@ export const TodoApp = () => {
         })
     }
 
+    const handleToggleTodo = (id) => {
+        dispatch({
+            type: '[TODO] Toggle Todo',
+            payload: id,
+        })
+    }
+
     return (
         <>
-            <h1>TodoApp (10), <small>pendientes: 2</small></h1>
+            <h1>TodoApp: {todos.length}, <small>pendientes: {todos.filter(todo => !todo.done).length}</small></h1>
             <hr />
 
             <div className="row">
@@ -52,19 +51,16 @@ export const TodoApp = () => {
                     <TodoList
                         todos={todos}
                         handleDeleteTodo={handleDeleteTodo}
+                        handleToggleTodo={handleToggleTodo}
                     />
                 </div>
 
                 <div className="col-5">
-                    {/* todo add onNewTodo(todo)*/}
-                    {/* {id:net Date(), description, done:fasle} */}
                     <h4>Agregar TODO</h4>
                     <hr />
                     <TodoAdd
                         handleNewTodo={handleNewTodo}
                     />
-
-                    {/* fin todo add */}
                 </div>
             </div>
         </>
