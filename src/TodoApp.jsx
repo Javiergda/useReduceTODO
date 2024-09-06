@@ -1,31 +1,33 @@
-import { useReducer } from "react"
+import { useEffect, useReducer } from "react"
 import { todoReducer } from "./todoReducer";
 import { TodoList } from "./TodoList";
 import { TodoAdd } from "./TodoAdd";
 
 
 const inialState = [
-    {
-        id: new Date().getTime(),
-        description: 'primera tarea',
-        done: false,
-    },
-    {
-        id: new Date().getTime() * 3,
-        description: 'segunda tarea',
-        done: false,
-    },
+    // {
+    //     id: new Date().getTime(),
+    //     description: 'primera tarea',
+    //     done: false,
+    // },
+
 ];
+
+const init = () => {
+    return JSON.parse(localStorage.getItem('todos')) || []; // si es nulo devolvemos arreglo vacio
+}
 
 export const TodoApp = () => {
 
-    const [todos, dispatch] = useReducer(todoReducer, inialState);
+    const [todos, dispatch] = useReducer(todoReducer, inialState, init);
 
-    console.log(todos);
+
+    useEffect(() => {
+        localStorage.setItem('todos', JSON.stringify(todos));
+    }, [todos]) // Guardamos en local storage cada vez que hay un cambio en los todos
+
 
     const handleNewTodo = (todo) => {
-        console.log(todo);
-
         const action = {
             type: '[TODO] Add Todo',
             payload: todo,
